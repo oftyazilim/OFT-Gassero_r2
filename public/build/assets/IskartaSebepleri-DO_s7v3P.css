@@ -1,0 +1,1 @@
+#grid-container{display:flex;overflow:hidden;flex-direction:column;flex-grow:1;block-size:100%}.grid{display:flex;flex-direction:column;flex-grow:1;block-size:calc(80vh - 130px);margin-block-end:200px}
