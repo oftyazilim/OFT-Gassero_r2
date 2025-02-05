@@ -171,15 +171,13 @@
     </DxDataGrid>
   </VCard>
 
-  <UretimGir v-model:isDialogVisible="isUretimGirisDialogVisible" :userData="modalParametre" />
-
   <DxPopup v-model:visible="popupUretimVisible" :width="400" :height="330" :hide-on-outside-click="false"
     :show-close-button="false" :title="'Üretim Girişi ' + tur">
     <template #content>
       <VRow>
         <VCol cols="12">
           <h6 class="text-h6 mb-2 ms-3 pt-2 mt-1">
-            Üretim {{ planMiktar }}
+            Üretim
           </h6>
           <AppTextField ref="inputRef" v-model="uretimMiktari" type="number" :max="planMiktar - uretilenMiktar" :min="0" />
         </VCol>
@@ -256,6 +254,7 @@ import {
   DxColumn,
   DxDataGrid,
   DxForm,
+  DxLookup,
   DxItem,
   DxColumnChooser,
   DxColumnChooserSearch,
@@ -279,7 +278,6 @@ import {
   DxTotalItem,
   DxColumnFixing,
 } from "devextreme-vue/data-grid";
-import UretimGir from "@/components/dialogs/UretimGir.vue";
 
 const popupUretimVisible = ref(false);
 const isUretimGirisDialogVisible = ref(false);
