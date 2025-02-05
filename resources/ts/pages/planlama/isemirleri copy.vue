@@ -172,29 +172,6 @@
   </VCard>
 
   <UretimGir v-model:isDialogVisible="isUretimGirisDialogVisible" :userData="modalParametre" />
-
-  <DxPopup v-model:visible="popupUretimVisible" :width="400" :height="330" :hide-on-outside-click="false"
-    :show-close-button="false" :title="'Üretim Girişi ' + tur">
-    <template #content>
-      <VRow>
-        <VCol cols="12">
-          <h6 class="text-h6 mb-2 ms-3 pt-2 mt-1">
-            Üretim {{ planMiktar }}
-          </h6>
-          <AppTextField ref="inputRef" v-model="uretimMiktari" type="number" :max="planMiktar - uretilenMiktar" :min="0" />
-        </VCol>
-        <VCol cols="12">
-          <h6 class="text-h6 mb-2 ms-3">
-            Iskarta
-          </h6>
-          <AppTextField ref="inputRef1" v-model="iskartaMiktari" type="number" />
-        </VCol>
-      </VRow>
-    </template>
-    <DxToolbarItem widget="dxButton" toolbar="bottom" location="center" :options="kaydetOptions"
-      @click="UretimKaydet()" />
-    <DxToolbarItem widget="dxButton" toolbar="bottom" location="center" :options="vazgecOptions" />
-  </DxPopup>
 </template>
 
 <script setup lang="ts">
@@ -249,12 +226,15 @@ import DxContextMenu, { DxContextMenuTypes } from "devextreme-vue/context-menu";
 import notify from "devextreme/ui/notify";
 import { usePageTitleStore } from "@/stores/pageTitle";
 import Swal from "sweetalert2";
-import { DxPopup, DxToolbarItem } from 'devextreme-vue/popup';
 
 import {
   DxButton,
   DxColumn,
   DxDataGrid,
+  DxDataGridTypes,
+  DxLookup,
+  DxEditing,
+  DxPopup,
   DxForm,
   DxItem,
   DxColumnChooser,
@@ -281,7 +261,6 @@ import {
 } from "devextreme-vue/data-grid";
 import UretimGir from "@/components/dialogs/UretimGir.vue";
 
-const popupUretimVisible = ref(false);
 const isUretimGirisDialogVisible = ref(false);
 const pageTitleStore = usePageTitleStore();
 const userData = useCookie<any>("userData");
@@ -296,8 +275,6 @@ const dataGridRef = ref<DxDataGrid | null>(null);
 const selectedRow = ref<any | null>(null);
 var mesaj = "Aktif İş Emri Sayısı: ";
 const expandAll = ref(true);
-const tur = ref("");
-
 var durum = "0";
 
 const groupingValues = [
@@ -952,53 +929,29 @@ function durumDegistir(isemrino: number, durumu: string) {
 }
 
 function onUretimClick(id: any) {
-  tur.value = " (yeni)";
-  uretilenMiktar.value = selectedRow.value.URETIMMIKTAR || 0;
-  planMiktar.value = selectedRow.value.PLANLANANMIKTAR || 0;
-  popupUretimVisible.value = true;
-  // isUretimGirisDialogVisible.value = !isUretimGirisDialogVisible.value;
+  isUretimGirisDialogVisible.value = !isUretimGirisDialogVisible.value;
 }
 
-const kaydetOptions = {
-  width: 100,
-  type: 'success',
-  text: 'Kaydet',
-  stylingMode: 'contained',
-};
+const rowId = ref(null);
 
-const uretimMiktari = ref(0);
-const planMiktar = ref(0);
-const uretilenMiktar = ref(0);
-const iskartaMiktari = ref(0);
+const modalParametre = computed(() => {
+  const selected = selectedRow.value || {};
+  const user = userData.value || {};
 
-const vazgecOptions = {
-  width: 100,
-  type: 'normal',
-  text: 'Vazgeç',
-  stylingMode: 'contained',
-  onClick: () => {
-    popupUretimVisible.value = false;
-    iskartaMiktari.value = 0;
-    uretimMiktari.value = 0;
-  },
-};
+  return {
+    id: selected.ID || 0,
+    userId: user.id || 0,
+    miktarTemp: selected.URETIMMIKTAR || 0,
+    planMiktar: selected.PLANLANANMIKTAR || 0,
+    tur: " (yeni)",
+  };
+});
 
-const UretimKaydet = async () => {
-  try {
-    await axios.put(`/api/uretimekle`, {
-      userId: userData.value.id,
-      kayitID: selectedRow.value.ID,
-      miktar: uretimMiktari.value,
-      miktarTemp: uretilenMiktar.value,
-      planMiktar: planMiktar.value,
-      iskarta: iskartaMiktari.value
-    })
-    popupUretimVisible.value = false;
+watch(isUretimGirisDialogVisible, (newValue, oldValue) => {
+  if (!newValue && oldValue) {
     getData();
-  } catch (error) {
-    console.error('Veri eklenirken hata oluştu:', error)
   }
-}
+});
 
 const kayitSil = (id: any) => {
   axios.get("/sanctum/csrf-cookie").then(() => {

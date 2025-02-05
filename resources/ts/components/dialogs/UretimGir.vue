@@ -143,10 +143,9 @@ const dialogModelValueUpdate = (val: boolean) => {
           <VRow>
             <VCol cols="12">
               <h6 class="text-h6 mb-2 ms-3">
-                Üretim
+                Üretim {{ cardDetails.planMiktar }}
               </h6>
-              <AppTextField ref="inputRef" v-model="cardDetails.miktar" type="number"
-                :max="cardDetails.planMiktar - cardDetails.miktarTemp" :min="0" />
+              <AppTextField ref="inputRef" v-model="cardDetails.miktar" type="number" :max="cardDetails.planMiktar - cardDetails.miktarTemp" :min="0"/>
             </VCol>
             <VCol cols="12">
               <h6 class="text-h6 mb-2 ms-3">
