@@ -9,7 +9,7 @@
       @init-new-row="initNewRow" @cell-prepared="onCellPrepared" :repaint-changes-only="true"
       @contextMenuPreparing="onContextMenuPreparing">
       <DxEditing :allow-updating="true" :allow-adding="true" :allow-deleting="true" :use-icons="true" mode="popup">
-        <DxPopup :show-title="true" :shading="true" :width="800" :height="580" title="İş Emri" />
+        <DxPopup :show-title="true" :shading="true" :width="600" :height="380" title="İş Emri" />
         <DxForm>
           <DxItem :col-count="2" :col-span="2" item-type="group">
             <DxItem data-field="URUNID" :visible="false" />
@@ -121,10 +121,10 @@
         <DxItem location="before" template="collapseTemplate" />
         <DxItem location="before" template="emirlerTemplate" />
         <DxItem location="after" template="refreshTemplate" />
-        <DxItem v-if="olusturmaIzni" name="addRowButton" />
+        <DxItem name="addRowButton" />
         <DxItem name="columnChooserButton" />
-        <DxItem name="searchPanel" />
         <DxItem name="exportButton" />
+        <DxItem name="searchPanel" />
       </DxToolbar>
 
       <template #aktifTemplate="{ data }">
@@ -171,7 +171,7 @@
     </DxDataGrid>
   </VCard>
 
-  <DxPopup v-model:visible="popupUretimVisible" :width="400" :height="330" :hide-on-outside-click="false"
+  <DxPopup v-model:visible="popupUretimVisible" :width="300" :height="3000" :hide-on-outside-click="false"
     :show-close-button="false" :title="'Üretim Girişi ' + tur">
     <template #content>
       <VRow>
@@ -248,9 +248,11 @@ import notify from "devextreme/ui/notify";
 import { usePageTitleStore } from "@/stores/pageTitle";
 import Swal from "sweetalert2";
 import { DxPopup, DxToolbarItem } from 'devextreme-vue/popup';
+import { DxButton } from 'devextreme-vue/button';
 
 import {
-  DxButton,
+  DxEditing,
+  //DxButton,
   DxColumn,
   DxDataGrid,
   DxForm,
