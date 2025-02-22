@@ -121,7 +121,7 @@
         <DxItem location="before" template="collapseTemplate" />
         <DxItem location="before" template="emirlerTemplate" />
         <DxItem location="after" template="refreshTemplate" />
-        <DxItem name="addRowButton" />
+        <DxItem v-if="olusturmaIzni" name="addRowButton" />
         <DxItem name="columnChooserButton" />
         <DxItem name="exportButton" />
         <DxItem name="searchPanel" />
@@ -171,7 +171,7 @@
     </DxDataGrid>
   </VCard>
 
-  <DxPopup v-model:visible="popupUretimVisible" :width="300" :height="3000" :hide-on-outside-click="false"
+  <DxPopup v-model:visible="popupUretimVisible" :width="280" :height="320" :hide-on-outside-click="false"
     :show-close-button="false" :title="'Üretim Girişi ' + tur">
     <template #content>
       <VRow>
@@ -202,6 +202,8 @@ import type { Rule } from "./ability";
 // Kullanıcı kurallarını al
 const userAbilityRules = useCookie<Rule[]>("userAbilityRules").value || [];
 document.title = "OFT - İş Emirleri";
+
+console.log(userAbilityRules);
 
 let okumaIzni = false;
 let olusturmaIzni = false;

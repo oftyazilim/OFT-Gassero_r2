@@ -9,6 +9,7 @@ use App\Models\Esanjor;
 use App\Models\Emir;
 use App\Models\HrktEsanjor;
 use App\Models\IskrtEsnjr;
+use App\Models\RwrkEsnjr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -19,14 +20,22 @@ class EsanjorController extends Controller
     $operasyon1 = $request->query('operasyon1');
     $operasyon2 = $request->query('operasyon2');
     $isemriID = (int)$request->isemriID;
-    
+
     $liste = DB::table('OFTV_01_STOKESANJOR')
       ->select('ID', 'ISEMRIID', 'URUNID', 'URUNKODU', 'URUNADI', 'URETIMTARIH', 'BARKOD')
       ->where('ISEMRIID', $isemriID)
       ->where($operasyon1, 1)
       ->where($operasyon2, 0)
       ->where('HURDA', false)
+      ->where('REWORK', false)
       ->orderBy('ID', 'ASC')->get();
+
+    $reworks = DB::table('OFTV_01_RWRKESANJOR')
+      ->select('ID', 'ISEMRIID', 'URUNKODU', 'URUNADI', 'KARANTINASEBEP', 'ESANJORID', 'BARKOD', 'DURUM')
+      ->where('OPERASYON', $operasyon2)
+      ->whereDate('KARANTINATARIH', '=', now()->toDateString())
+      ->orderBy('ID', 'DESC')
+      ->get();
 
     $iskartalar = DB::table('OFTV_01_ISKRTESANJOR')
       ->select('ID', 'ISEMRIID', 'URUNKODU', 'URUNADI', 'SEBEP', 'ESANJORID', 'BARKOD')
@@ -50,49 +59,52 @@ class EsanjorController extends Controller
     $toplamListe = $liste->count() | 0;
     $toplamEmir = $emirler->count() | 0;
     $toplamIskarta = $iskartalar->count() | 0;
+    $toplamReworks = $reworks->count() | 0;
+
+    // Log::info($toplamUretim);
 
     return response()->json([
       'liste' => $liste,
       'emirler' => $emirler,
       'iskartalar' => $iskartalar,
+      'reworks' => $reworks,
       'toplamListe' => $toplamListe,
       'toplamEmir' => $toplamEmir,
       'toplamIskarta' => $toplamIskarta,
+      'toplamReworks' => $toplamReworks,
       'toplamUretim' => $toplamUretim,
     ]);
   }
 
-
-  public function stokAl()
+  public function getReworks()
   {
-    $data = DB::table('OFTV_01_STOKESANJOR')
-      ->orderBy('ID', 'desc')
+    $reworks = DB::table('OFTV_01_RWRKESANJOR')
+      ->where('KARANTINATARIH', '>=', '2025-01-01')
+      ->where('DURUM', 'BEKLEMEDE')
+      ->orderBy('ID', 'DESC')
       ->get();
 
-      $op1 = $data->where('OPERASYON1', true)->where('OPERASYON2', false)->count();
-      $op2 = $data->where('OPERASYON2', true)->where('OPERASYON3', false)->count();
-      $op3 = $data->where('OPERASYON3', true)->where('OPERASYON4', false)->count();
-      $op4 = $data->where('OPERASYON4', true)->where('OPERASYON5', false)->count();
-      $op5 = $data->where('OPERASYON5', true)->where('OPERASYON6', false)->count();
-      $op6 = $data->where('OPERASYON6', true)->count();
+    $toplamGirdi = $reworks->count();
 
-      $toplam = $data->count();
+    $ciktilar = DB::table('OFTV_01_RWRKESANJOR')
+      ->where('KARANTINATARIH', '>=', '2025-01-01')
+      ->where('DURUM', '!=', 'BEKLEMEDE')
+      ->orderBy('ID', 'DESC')
+      ->get();
+
+    $toplamCikti = $ciktilar->count();
 
     return response()->json([
-      'data' => $data,
-      'op1' => $op1,
-      'op2' => $op2,
-      'op3' => $op3,
-      'op4' => $op4,
-      'op5' => $op5,
-      'op6' => $op6,
-      'toplam' => $toplam,
-    ], 200);
+      'reworks' => $reworks,
+      'ciktilar' => $ciktilar,
+      'toplamGirdi' => $toplamGirdi,
+      'toplamCikti' => $toplamCikti,
+    ]);
   }
 
   public function operasyonKaydet(Request $request)
   {
-    Log::info($request);
+    // Log::info($request);
     $operasyon2 = $request->input('params.operasyon2');
 
     $uretim = HrktEsanjor::create([
@@ -161,39 +173,148 @@ class EsanjorController extends Controller
 
   public function iskartaEkle(Request $request)
   {
-
-    Log::info($request);
-
-    $iskarta = IskrtEsnjr::create([
-      'ESANJORID' => (int)$request->input('params.id'),
-      'URUNID' => (int)$request->input('params.urunID'),
-      'ISEMRIID' => (int)$request->input('params.isemriID'),
-      'BARKOD' => $request->input('params.barkod'),
-      'SEBEP' => $request->input('params.sebep'),
-      'OPERASYON' => $request->input('params.operasyon'),
-      'HURDATARIH' => now(),
-      'OLUSTURANID' => (int)$request->input('params.userID'),
-    ]);
-
-    $hurdayaAyir = Esanjor::find($request->input('params.id'));
-
-    if ($hurdayaAyir) {
-      $hurdayaAyir->update([
-        'HURDA' => 1,
-        'SONDURUMTARIH' => now(),
-        'DUZENLEYENID' => (int)$request->input('params.userID'),
+    // Log::info($request->all());
+    if ($request->input('params.tur') === 'h') {
+      $iskarta = IskrtEsnjr::create([
+        'ESANJORID' => (int)$request->input('params.id'),
+        'URUNID' => (int)$request->input('params.urunID'),
+        'ISEMRIID' => (int)$request->input('params.isemriID'),
+        'BARKOD' => $request->input('params.barkod'),
+        'SEBEP' => $request->input('params.sebep'),
+        'OPERASYON' => $request->input('params.operasyon'),
+        'HURDATARIH' => now(),
+        'OLUSTURANID' => (int)$request->input('params.userID'),
       ]);
+
+      $hurdayaAyir = Esanjor::find($request->input('params.id'));
+
+      if ($hurdayaAyir) {
+        $hurdayaAyir->update([
+          'HURDA' => 1,
+          'SONDURUMTARIH' => now(),
+          'DUZENLEYENID' => (int)$request->input('params.userID'),
+        ]);
+      }
+    } else {
+      $iskarta = RwrkEsnjr::create([
+        'ESANJORID' => (int)$request->input('params.id'),
+        'URUNID' => (int)$request->input('params.urunID'),
+        'ISEMRIID' => (int)$request->input('params.isemriID'),
+        'BARKOD' => $request->input('params.barkod'),
+        'KARANTINASEBEP' => $request->input('params.sebep'),
+        'OPERASYON' => $request->input('params.operasyon'),
+        'KARANTINATARIH' => now(),
+        'OLUSTURANID' => (int)$request->input('params.userID'),
+        'DURUM' => 'Beklemede',
+      ]);
+
+      $hurdayaAyir = Esanjor::find($request->input('params.id'));
+
+      if ($hurdayaAyir) {
+        $hurdayaAyir->update([
+          'REWORK' => 1,
+          'SONDURUMTARIH' => now(),
+          'DUZENLEYENID' => (int)$request->input('params.userID'),
+        ]);
+      }
     }
     return response()->json($iskarta->wasRecentlyCreated ? 'Created' : 'Updated');
   }
 
-  public function getSebepList()
+  public function getSebepList(Request $request)
   {
-    $data = DB::table('OFTT_01_ISKRTSEBEPLERI')
-      ->where('ISTASYONID', 10)
-      ->select('ID', 'SEBEP')
-      ->get();
+    if ($request->tur === 'h')
+      $data = DB::table('OFTT_01_ISKRTSEBEPLERI')
+        ->where('ISTASYONID', 10)
+        ->select('ID', 'SEBEP')
+        ->get();
+    else
+      $data = DB::table('OFTT_01_RWRKSEBEPLERI')
+        ->where('ISTASYONID', 10)
+        ->select('ID', 'SEBEP')
+        ->get();
 
     return response()->json($data);
+  }
+
+  public function ReworksKaydet(Request $request)
+  {
+      Log::info($request->all());
+      
+      try {
+          $updateData = $request->input('updateData');
+          
+          if (empty($updateData) || !is_array($updateData)) {
+              return response()->json(['error' => 'Geçersiz veri!'], 400);
+          }
+          
+          // İşlemleri başlat
+          DB::beginTransaction();
+          
+          foreach ($updateData as $data) {
+              if ($data['tur'] === 'h') {
+                $iskarta = IskrtEsnjr::create([
+                  'ESANJORID' => (int)$data['esanjorID'],
+                  'URUNID' => (int)$data['urunID'],
+                  'ISEMRIID' => (int)$data['isemriID'],
+                  'BARKOD' => $data['barkod'],
+                  'SEBEP' => $data['sebep'],
+                  'OPERASYON' => $data['operasyon'],
+                  'HURDATARIH' => now(),
+                  'OLUSTURANID' => (int)$data['userID'],
+                ]);
+          
+                $hurdayaAyir = Esanjor::find($data['esanjorID']);
+          
+                if ($hurdayaAyir) {
+                  $hurdayaAyir->update([
+                    'HURDA' => 1,
+                    'SONDURUMTARIH' => now(),
+                    'DUZENLEYENID' => (int)$data['userID'],
+                  ]);
+                }
+          
+                $reworks = RwrkEsnjr::find($data['id']);
+          
+                if ($reworks) {
+                  $reworks->update([
+                    'DURUM' => 'Hurda',
+                    'SONDRMTARIH' => now(),
+                    'REWORKTARIH' => now(),
+                    'ISKARTASEBEP' => $data['sebep'],
+                    'DUZENLEYENID' => (int)$data['userID'],
+                  ]);
+                }
+              } else {
+                $uretimeAl = Esanjor::find($data['esanjorID']);
+          
+                if ($uretimeAl) {
+                  $uretimeAl->update([
+                    'REWORK' => 0,
+                    'SONDURUMTARIH' => now(),
+                    'DUZENLEYENID' => (int)$data['userID'],
+                  ]);
+                }
+          
+                $reworks = RwrkEsnjr::find($data['id']);
+          
+                if ($reworks) {
+                  $reworks->update([
+                    'DURUM' => 'Uygun',
+                    'SONDRMTARIH' => now(),
+                    'REWORKTARIH' => now(),
+                    'DUZENLEYENID' => (int)$data['userID'],
+                  ]);
+                }
+              }
+          }
+
+          DB::commit();
+
+          return response()->json(['success' => 'Veriler başarıyla güncellendi.']);
+      } catch (\Exception $e) {
+          DB::rollBack();
+          return response()->json(['error' => 'Bir hata oluştu: ' . $e->getMessage()], 500);
+      }
   }
 }

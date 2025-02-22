@@ -67,7 +67,7 @@ import { exportDataGrid } from "devextreme/excel_exporter";
 import { Workbook } from "exceljs";
 import { saveAs } from "file-saver-es";
 
-const apiUrl = '/api/iskartasebepleri'; // Backend API rotası
+const apiUrl = '/api/karantinasebepleri'; // Backend API rotası
 const data = ref([]);
 
 const onRowUpdating = (e: any) => {
@@ -135,7 +135,7 @@ const getData = async () => {
 
   } catch (error) {
     console.error('Error fetching data:', error);
-    notify(`Iskarta Sebepleri verisi alınamadı`, 'error', 1500)
+    notify(`Veriler alınamadı`, 'error', 1500)
 
   } finally {
   }
@@ -203,7 +203,7 @@ function itemClick({ itemData }: DxContextMenuTypes.ItemClickEvent) {
 
 const onExporting = (e: DxDataGridTypes.ExportingEvent) => {
   const workbook = new Workbook();
-  const worksheet = workbook.addWorksheet("IskartaSebepleri");
+  const worksheet = workbook.addWorksheet("KarantinaSebepleri");
 
   exportDataGrid({
     component: e.component,
@@ -213,7 +213,7 @@ const onExporting = (e: DxDataGridTypes.ExportingEvent) => {
     workbook.xlsx.writeBuffer().then((buffer) => {
       saveAs(
         new Blob([buffer], { type: "application/octet-stream" }),
-        "IskartaSebepleri.xlsx"
+        "KarantinaSebepleri.xlsx"
       );
     });
   });

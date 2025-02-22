@@ -5,36 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Esanjor extends Model
+class RwrkEsnjr extends Model
 {
     use HasFactory;
-
-    protected $table = 'OFTT_01_STOKESANJOR'; // Tablo ismini belirtiyoruz
+    protected $table = 'OFTT_01_RWRKESANJOR'; // Tablo ismini belirtiyoruz
 
     protected $primaryKey = 'ID';
     
     protected $fillable = [
-        'URUNKODU',
-        'URUNADI',
-        'STGRPKOD',
+        'URUNID',
+        'ESANJORID', 
         'BARKOD',
-        'URETIMTARIH',
+        'KARANTINATARIH',
+        'REWORKTARIH',
         'SONDRMTARIH',
         'OLUSTURANID',
         'DUZENLEYENID',
         'SILINDI',
         'SILINMETARIH',
         'SILENID',
-        'OPERASYON1',
-        'OPERASYON2',
-        'OPERASYON3',
-        'OPERASYON4',
-        'OPERASYON5',
-        'OPERASYON6',
-        'MAMULFINAL',
-        'HURDA',
+        'OPERASYON',
+        'KARANTINASEBEP',
+        'ISKARTASEBEP',
         'ISEMRIID',
         'REWORK',
+        'DURUM',
     ];
 
 

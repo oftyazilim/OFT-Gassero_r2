@@ -11,9 +11,13 @@ import '@styles/styles.scss'
 
 import config from 'devextreme/core/config'
 import { licenseKey } from './devextreme-license'
- 
-config({ licenseKey })
+import { locale, loadMessages } from 'devextreme/localization';
+import trMessages from 'devextreme/localization/messages/tr.json';
 
+loadMessages(trMessages); // Türkçe mesajları yükle
+locale('tr'); // Lokalizasyonu Türkçe'ye ayarla
+config({ licenseKey })
+ 
 // Create vue app
 const app = createApp(App)
 

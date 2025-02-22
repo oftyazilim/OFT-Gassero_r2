@@ -8,18 +8,20 @@
       @cell-prepared="onCellPrepared" :repaint-changes-only="true" @contextMenuPreparing="onContextMenuPreparing">
 
       <DxColumn data-field="ID" caption="ID" data-type="number" :width="90" alignment="center" />
+      <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ ID" :width="120" data-type="number"/>
       <DxColumn data-field="OPERASYON" caption="OPERASYON" data-type="string" :visible="false" :width="160" />
-      <DxColumn data-field="OPERASYON_TANIMI" caption="OPERASYON" data-type="string" :visible="true" :width="200" :group-index="1"/>
+      <DxColumn data-field="OPERASYON_TANIMI" caption="OPERASYON" data-type="string" :visible="true" :width="200"/>
       <DxColumn data-field="URUNID" data-type="number" caption="URUN ID" :visible="true" :width="100" />
-      <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ ID" :width="120" data-type="number" :group-index="0"/>
       <DxColumn data-field="ESANJORID" caption="EŞANJÖR ID" data-type="number" />
-      <DxColumn data-field="URETIMTARIH" caption="ÜRT. TARİH" data-type="date" :width="150" :visible="true"
+      <DxColumn data-field="URETIMTARIH" caption="ÜRT. TARİH" data-type="date" :width="200" :visible="true"
         alignment="center" :format="{
           formatter: (date) => {
             const formattedDate = new Intl.DateTimeFormat('tr-TR', {
               year: 'numeric',
               month: '2-digit',
               day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
             }).format(new Date(date));
 
             return formattedDate.replace(/\//g, '.');

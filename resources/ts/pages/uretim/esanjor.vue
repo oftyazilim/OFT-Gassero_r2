@@ -5,18 +5,17 @@
     <DxRow :ratio="1" />
     <DxRow :ratio="1" />
     <DxRow :ratio="1" />
-    <DxCol :ratio="4" />
-    <DxCol :ratio="3" />
-    <DxCol :ratio="8" />
+
+    <DxCol :ratio="2.33" />
+    <DxCol :ratio="2.33" />
+    <DxCol :ratio="2.33" />
+    <DxCol :ratio="7" />
 
     <DxItem>
-      <DxLocation :row="0" :col="0" :colspan="2" />
-      <VCard class="pa-8 text-center mb-2 me-2" style="width: 100%;">
+      <DxLocation :row="0" :col="0" :colspan="3" />
+      <VCard class="pa-8 text-center mb-2 me-2" style="inline-size: 100%;">
 
         <v-row class="h-200">
-          <!-- <v-col cols="1" class="d-flex flex-column align-center justify-center pa-0">
-            <h2 class="rotated-text">SAYAÇ</h2>
-          </v-col> -->
           <v-col cols="5" class="d-flex flex-column align-left justify-center ps-0">
             <VCard class="mantar-buton text-center d-flex align-center justify-center position-relative" :style="{
               transform: isPressed ? 'scale(0.95)' : 'scale(1)',
@@ -29,12 +28,12 @@
             </VCard>
           </v-col>
 
-          <v-col cols="3" class="d-flex flex-column align-center justify-center pt-0">
+          <v-col cols="3" class="d-flex flex-column align-center justify-center ps-4 pt-0">
             <h2>GERİ AL</h2>
             <VCard class="mantar-buton text-center mt-2 d-flex align-center justify-center position-relative" :style="{
               transform: isPressedg ? 'scale(0.95)' : 'scale(1)',
               transition: 'transform 0.1s ease',
-              cursor: isCooldowng ? 'not-allowed1' : 'pointer1',
+              cursor: isCooldowng ? cooldownTime == 0 ? 'not-allowed' : 'pointer' : 'not-allowed',
             }" height="100" width="100" style="border-radius: 75px;" @mousedown="handlePressg"
               @mouseup="handleReleaseg" @mouseleave="handleReleaseg" @touchstart.prevent="handlePressg"
               @touchend="handleReleaseg" @touchcancel="handleReleaseg">
@@ -43,30 +42,44 @@
             </VCard>
           </v-col>
 
-          <v-col cols="4" class="d-flex flex-column align-center justify-center pt-0 pe-0">
-            <h2>HURDA</h2>
-            <VCard class="mantar-buton text-center mt-2 d-flex align-center justify-center position-relative" :style="{
-              transform: isPressed1 ? 'scale(0.95)' : 'scale(1)',
-              transition: 'transform 0.1s ease',
-              cursor: isCooldown1 ? 'not-allowed1' : 'pointer1',
-            }" height="100" width="100" style="border-radius: 75px;" @mousedown="handlePress1"
-              @mouseup="handleRelease1" @mouseleave="handleRelease1" @touchstart.prevent="handlePress1"
-              @touchend="handleRelease1" @touchcancel="handleRelease1">
-              <img :src="isCooldown ? cooldownImage : cooldownImage1" alt="Buton Simge" class="button-icon" />
-            </VCard>
+          <v-col cols="4" class="d-flex flex-column align-center justify-center ps-0 pt-0 pe-0">
+            <VCol cols="7" class="d-flex flex-column align-center justify-center pt-2 pb-0 pe-0">
+              <h3>REWORK</h3>
+              <VCard class="mantar-buton text-center mt-1 d-flex align-center justify-center position-relative" :style="{
+                transform: isPressedr ? 'scale(0.95)' : 'scale(1)',
+                transition: 'transform 0.1s ease',
+                cursor: isCooldown ? 'not-allowed' : 'pointer',
+              }" height="50" width="100" style="border-radius: 75px;" @mousedown="handlePressr"
+                @mouseup="handleReleaser" @mouseleave="handleReleaser" @touchstart.prevent="handlePressr"
+                @touchend="handleReleaser" @touchcancel="handleReleaser">
+                <img :src="isCooldown ? cooldownImage : cooldownImage1" alt="Buton Simge" class="button-icon" />
+              </VCard>
+            </VCol>
+
+            <VCol cols="7" class="d-flex flex-column align-center justify-center pt-0 pb-0 pe-0">
+              <h3>HURDA</h3>
+              <VCard class="mantar-buton text-center mt-1 d-flex align-center justify-center position-relative" :style="{
+                transform: isPressedh ? 'scale(0.95)' : 'scale(1)',
+                transition: 'transform 0.1s ease',
+                cursor: isCooldown ? 'not-allowed' : 'pointer',
+              }" height="50" width="100" style="border-radius: 75px;" @mousedown="handlePressh"
+                @mouseup="handleReleaseh" @mouseleave="handleReleaseh" @touchstart.prevent="handlePressh"
+                @touchend="handleReleaseh" @touchcancel="handleReleaseh">
+                <img :src="isCooldown ? cooldownImage : cooldownImage1" alt="Buton Simge" class="button-icon" />
+              </VCard>
+            </VCol>
           </v-col>
         </v-row>
       </VCard>
     </DxItem>
 
-
     <DxItem>
-      <DxLocation :row="1" :col="0" :colspan="2" />
-      <VCard class="d-flex flex-column align-center justify-start text-center pb-0 me-2"
-        style="width: 100%; height: 90px;">
-        <div class=" text-center align-center justify-center pt-0">
+      <DxLocation :row="1" :col="0" :colspan="3" />
+      <VCard class="d-flex flex-column align-center justify-start text-center me-2 pb-0">
+        <div class=" text-center align-center justify-center pt-3 pb-0">
           <h1 :key="currentDate" class="date-time mb-0">{{ currentDate }}</h1>
-          <h4 :key="currentTime" class="date-time" style="font-size: 40px; margin-top: -10px;">{{ currentTime }}</h4>
+          <h4 :key="currentTime" class="date-time pb-2" style="font-size: 40px; margin-block-start: -10px;">
+            {{ currentTime }}</h4>
         </div>
       </VCard>
     </DxItem>
@@ -74,6 +87,7 @@
     <DxItem>
       <DxLocation :row="2" :col="0" :rowspan="2" />
       <VCard class="uygun text-center  ">
+        <h2 class="mt-3">UYGUN</h2>
         <transition name="spin" mode="out-in">
           <h2 :key="uygun" class="animated-number pa-0" style="color: green;">
             {{ formatNumber(uygun) }}
@@ -85,6 +99,19 @@
     <DxItem>
       <DxLocation :row="2" :col="1" :rowspan="2" />
       <VCard class="iskarta   text-center  ">
+        <h2 class="mt-3">REWORK</h2>
+        <transition name="spin" mode="out-in">
+          <h2 :key="rework" class="animated-number pa-0" style="color: darkorange;">
+            {{ formatNumber(rework) }}
+          </h2>
+        </transition>
+      </VCard>
+    </DxItem>
+
+    <DxItem>
+      <DxLocation :row="2" :col="2" :rowspan="2" />
+      <VCard class="iskarta   text-center  ">
+        <h2 class="mt-3">HURDA</h2>
         <transition name="spin" mode="out-in">
           <h2 :key="iskarta" class="animated-number pa-0" style="color: red;">
             {{ formatNumber(iskarta) }}
@@ -93,24 +120,59 @@
       </VCard>
     </DxItem>
 
-
-
-
     <DxItem>
-      <DxLocation :row="0" :col="2" :rowspan="4" />
-      <div>
-        <VExpansionPanels v-model="panel" class="no-icon-rotate">
-          <VExpansionPanel>
-            <VExpansionPanelTitle disable-icon-rotate>
-              SIRADAKİ YARI MAMULLER - <h3> &nbsp; &nbsp; {{ toplamListe
-                }} &nbsp;</h3> adet
-              <template #actions>
-                <VIcon size="18" icon="tabler-list-numbers" color="primary" />
-              </template>
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <div style="margin-block-end: -10px; margin-inline: -10px;">
-                <DxDataGrid id="grdSiradakiler" ref="dataGrid" :data-source="veriListe" key-expr="ID" :height="427"
+      <DxLocation :row="0" :col="3" :rowspan="4" />
+      <VCard>
+        <VTabs v-model="currentTab" fixed-tabs>
+          <VTab>
+            İş Emirleri
+          </VTab>
+          <VTab>
+            Sırada:<h3> &nbsp; {{
+              toplamListe
+            }} &nbsp;</h3>
+          </VTab>
+          <VTab>
+            Rework:<h3> &nbsp; {{
+              toplamRework
+            }} &nbsp;</h3>
+          </VTab>
+          <VTab>
+            Hurdalar:<h3> &nbsp; {{
+              toplamIskarta
+            }} &nbsp;</h3>
+          </VTab>
+          <VTab>
+            Kalite
+          </VTab>
+        </VTabs>
+
+        <VCardText class="mt-0 pa-0">
+          <VWindow v-model="currentTab">
+            <VWindowItem value="tab-1">
+              <VCardText class="pa-0 pt-1">
+                <DxDataGrid id="grdEmirler" :data-source="veriEmirler" key-expr="ID" :height="560" :show-borders="true"
+                  :focused-row-enabled="true" :allow-column-resizing="true" width="100%" @row-dbl-click="onRowDblClick">
+                  <DxEditing :use-icons="true" mode="row" />
+                  <DxColumn type="buttons" :width="40">
+                    <DxButton hint="Clone" icon="login" :visible="true" :disabled="false" @click="UretimeAl" />
+                  </DxColumn>
+                  <DxColumn data-field="ID" caption="ID" data-type="number" :visible="true" :width="60" />
+                  <DxColumn data-field="KOD" caption="ÜRÜN KODU" data-type="string" :visible="true" :width="120" />
+                  <DxColumn data-field="TANIM" caption="ÜRÜN ADI" data-type="string" :visible="true" />
+                  <DxColumn data-field="PLANLANANMIKTAR" caption="PLAN" data-type="number" :visible="true"
+                    :width="70" />
+                  <DxColumn data-field="URETIMMIKTAR" caption="ÜRETİM" data-type="number" :visible="true" :width="80" />
+
+                  <DxSorting mode="none" />
+                  <DxScrolling mode="virtual" row-rendering-mode="virtual" />
+                </DxDataGrid>
+              </VCardText>
+            </VWindowItem>
+
+            <VWindowItem value="tab-2">
+              <VCardText class="pa-0 pt-1">
+                <DxDataGrid id="grdSiradakiler" ref="dataGrid" :data-source="veriListe" key-expr="ID" :height="560"
                   :show-borders="true" :allow-column-resizing="true" width="100%">
                   <DxColumn data-field="ID" caption="ID" data-type="number" :visible="true" :width="60" />
                   <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ" data-type="number" :visible="true" :width="80" />
@@ -121,66 +183,33 @@
                     :show-pane="true" :shading="true" />
                   <DxSorting mode="none" />
                   <DxScrolling mode="virtual" row-rendering-mode="virtual" />
-
                 </DxDataGrid>
-              </div>
-            </VExpansionPanelText>
-          </VExpansionPanel>
+              </VCardText>
+            </VWindowItem>
 
-          <VExpansionPanel>
-            <VExpansionPanelTitle disable-icon-rotate>
-              İş Emirleri
-              <template #actions>
-                <VIcon size="18" icon="tabler-calendar-cog" color="success" />
-              </template>
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <!-- <VCard class="pa-1 mt-0" height="145">
-                <VRow>
-                  <VCol cols="1" class="ma-0 pa-0 text-wrap">
-                    <h3 class="rotated-text" style="margin-block-start: 125px;">İŞ EMRİ - {{ toplamEmir }}</h3>
-                  </VCol>
-                  <VCol cols="11">-->
-              <div style="margin-block-end: -10px; margin-inline: -10px;">
-                <DxDataGrid id="grdEmirler" :data-source="veriEmirler" key-expr="ID" :height="427" :show-borders="true"
-                  :focused-row-enabled="true" :allow-column-resizing="true" width="100%" @row-dbl-click="onRowDblClick">
-                  <DxEditing :use-icons="true" mode="row" />
-                  <DxColumn type="buttons" :width="40">
-                    <DxButton hint="Clone" icon="login" :visible="true" :disabled="false" @click="UretimeAl" />
-                  </DxColumn>
-                  <DxColumn data-field="ID" caption="ID" data-type="number" :visible="true" :width="40" />
-                  <DxColumn data-field="KOD" caption="ÜRÜN KODU" data-type="string" :visible="true" :width="120" />
-                  <DxColumn data-field="TANIM" caption="ÜRÜN ADI" data-type="string" :visible="true" />
-                  <DxColumn data-field="PLANLANANMIKTAR" caption="PLAN" data-type="number" :visible="true"
-                    :width="70" />
-                  <DxColumn data-field="URETIMMIKTAR" caption="ÜRETİM" data-type="number" :visible="true" :width="70" />
-
+            <VWindowItem value="tab-3">
+              <VCardText class="pa-0 pt-1">
+                <DxDataGrid id="grdReworks" :data-source="veriReworks" key-expr="ID" :height="560" :show-borders="true">
+                  <DxColumn data-field="ID" caption="ID" data-type="number" :visible="false" :width="60" />
+                  <DxColumn data-field="ESANJORID" caption="EŞ.ID" data-type="number" :visible="true" :width="70" />
+                  <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ" data-type="number" :visible="true" :width="80" />
+                  <DxColumn data-field="URUNKODU" caption="ÜRÜN KODU" data-type="string" :visible="true" :width="120" />
+                  <DxColumn data-field="URUNADI" caption="ÜRÜN ADI" data-type="string" :visible="true"  :width="160" />
+                  <DxColumn data-field="KARANTINASEBEP" caption="SEBEP" data-type="string" :visible="true"  :width="120" />
+                  <DxColumn data-field="DURUM" caption="DURUM" data-type="string" :visible="true" :width="40"
+                  :cell-template="getIconType" />
+                  <DxColumn data-field="BARKOD" caption="BARKOD" data-type="string" :visible="true" :width="120"  />
+                  <DxLoadPanel :key="loadingVisible" v-model:visible="loadingVisible" :show-indicator="true"
+                    :show-pane="true" :shading="true" />
                   <DxSorting mode="none" />
                   <DxScrolling mode="virtual" row-rendering-mode="virtual" />
                 </DxDataGrid>
-              </div>
-              <!--  </VCol>
-                </VRow>
-              </VCard> -->
-            </VExpansionPanelText>
-          </VExpansionPanel>
+              </VCardText>
+            </VWindowItem>
 
-          <VExpansionPanel>
-            <VExpansionPanelTitle disable-icon-rotate>
-              Hurdalar
-              <template #actions>
-                <VIcon size="18" icon="tabler-alert-triangle" color="warning" />
-              </template>
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <!-- <VCard class="pa-1 mt-2" height="164">
-                <VRow>
-                  <VCol cols="1" class="ma-0 pa-0 text-wrap">
-                    <h3 class="rotated-text" style="margin-block-start: 140px;">ISKARTALAR</h3>
-                  </VCol>
-                  <VCol cols="11">-->
-              <div style="margin-block-end: -10px; margin-inline: -10px;">
-                <DxDataGrid id="grdIskartalar" :data-source="veriIskartalar" key-expr="ID" :height="427"
+            <VWindowItem value="tab-4">
+              <VCardText class="pa-0 pt-1">
+                <DxDataGrid id="grdIskartalar" :data-source="veriIskartalar" key-expr="ID" :height="560"
                   :show-borders="true">
                   <DxColumn data-field="ID" caption="ID" data-type="number" :visible="false" :width="60" />
                   <DxColumn data-field="ESANJORID" caption="EŞ.ID" data-type="number" :visible="true" :width="60" />
@@ -188,27 +217,28 @@
                   <DxColumn data-field="URUNKODU" caption="ÜRÜN KODU" data-type="string" :visible="true" :width="120" />
                   <DxColumn data-field="URUNADI" caption="ÜRÜN ADI" data-type="string" :visible="true" />
                   <DxColumn data-field="SEBEP" caption="SEBEP" data-type="string" :visible="true" />
-
+                  <DxLoadPanel :key="loadingVisible" v-model:visible="loadingVisible" :show-indicator="true"
+                    :show-pane="true" :shading="true" />
                   <DxSorting mode="none" />
                   <DxScrolling mode="virtual" row-rendering-mode="virtual" />
                 </DxDataGrid>
-              </div>
-              <!--   </VCol>
-                </VRow>
-              </VCard> -->
-            </VExpansionPanelText>
-          </VExpansionPanel>
-        </VExpansionPanels>
-      </div>
+
+              </VCardText>
+            </VWindowItem>
+
+            <VWindowItem value="tab-5">
+
+            </VWindowItem>
+          </VWindow>
+        </VCardText>
+      </VCard>
     </DxItem>
-
-
 
   </DxResponsiveBox>
 
 
   <DxPopup v-model:visible="popupHurdaVisible" :width="400" :height="230" :hide-on-outside-click="false"
-    :show-close-button="false" title="Hurda Sebebini Giriniz">
+    :show-close-button="false" :title="popupTitle">
     <template #content>
       <VCol cols="12" class="mt-2">
         <AppSelect v-model="durusSebebi" placeholder="Sebep Giriniz..." :items="sebepOptions" />
@@ -223,32 +253,30 @@
 
 <script setup lang="ts">
 
-import {
-  DxResponsiveBox, DxItem, DxLocation, DxCol, DxRow,
-} from 'devextreme-vue/responsive-box';
 import { usePageTitleStore } from "@/stores/pageTitle";
+import butonkirmizi from '@images/buton-kirmizi1.png';
+import butonmavi from '@images/buton-mavi1.png';
+import butonyesil from '@images/buton-yesil1.png';
+import axios from "axios";
 import {
   DxColumn,
   DxDataGrid,
-  DxScrolling,
-  DxSorting,
   DxEditing,
   DxButton,
-  DxLoadPanel,
   DxDataGridTypes,
-  // DxSummary,
-  // DxTotalItem,
+  DxLoadPanel,
+  DxScrolling,
+  DxSorting
 } from "devextreme-vue/data-grid";
-import { Ref, ref, toRaw } from "vue";
-import butonyesil from '@images/buton-yesil1.png'
-import butonkirmizi from '@images/buton-kirmizi1.png'
-import butonmavi from '@images/buton-mavi1.png'
-import axios from "axios";
-import Swal from 'sweetalert2'
-import { useRoute } from 'vue-router';
-import notify from "devextreme/ui/notify";
 import { DxPopup, DxToolbarItem } from 'devextreme-vue/popup';
-import DxSelectBox from "devextreme-vue/cjs/select-box";
+import {
+  DxCol,
+  DxItem, DxLocation,
+  DxResponsiveBox,
+  DxRow,
+} from 'devextreme-vue/responsive-box';
+import { ref } from "vue";
+import { useRoute } from 'vue-router';
 
 const screen = (width) => ((width < 700) ? 'sm' : 'lg');
 
@@ -256,35 +284,38 @@ const screen = (width) => ((width < 700) ? 'sm' : 'lg');
 const defaultImage = butonyesil;
 const cooldownImage = butonkirmizi; // Bekleme süresindeyken
 const cooldownImage1 = butonmavi; // Bekleme süresindeyken
-const isUserInfoEditDialogVisible = ref(false)
 const popupHurdaVisible = ref(false);
+const currentTab = ref('tab-1')
 
 // Buton için durumlar
-const counter = ref(0);
 const isPressed = ref(false);
 const isCooldown = ref(false);
 const cooldownTime = ref(0);
-const counterg = ref(0);
 const isPressedg = ref(false);
 const isCooldowng = ref(false);
 const cooldownTimeg = ref(0);
-const counter1 = ref(0);
-const isPressed1 = ref(false);
-const isCooldown1 = ref(false);
-const cooldownTime1 = ref(0);
+const isPressedh = ref(false);
+const isCooldownh = ref(false);
+const cooldownTimeh = ref(0);
+const isPressedr = ref(false);
+const isCooldownr = ref(false);
+const cooldownTimer = ref(0);
 const tempID = ref<number | 0>(0);
 const tempURUNID = ref<number | 0>(0);
 const tempISEMRIID = ref<number | 0>(0);
 const tempBARKOD = ref<string | ''>('');
 const uygun = ref(0);
+const rework = ref(0);
 const iskarta = ref(0);
 const currentDate = ref("");
 const currentTime = ref("");
 const veriListe = ref<VeriListe[]>([]);
 const veriEmirler = ref<VeriEmirler[]>([]);
+const veriReworks = ref<VeriReworks[]>([]);
 const veriIskartalar = ref<VeriIskartalar[]>([]);
 const toplamListe = ref(0);
 const toplamEmir = ref(0);
+const toplamRework = ref(0);
 const toplamIskarta = ref(0);
 const userData = useCookie<any>("userData");
 const pageTitleStore = usePageTitleStore();
@@ -292,8 +323,10 @@ const dataGrid = ref<DxDataGrid | null>(null);
 const panel = ref(0)
 const aktifIsemriID = ref(0);
 const durusSebebi = ref("");
+const popupTitle = ref("");
 const sebepOptions = ref<string[]>([])
-
+const loadingVisible = ref<boolean>(false);
+const tur = ref('');
 
 const kaydetOptions = {
   width: 100,
@@ -344,6 +377,15 @@ interface VeriIskartalar {
   SEBEP?: string | null;
 }
 
+interface VeriReworks {
+  ID?: number | null;
+  ESANJORID?: number | null;
+  ISEMRIID?: number | null;
+  URUNKODU?: string | null;
+  URUNADI?: string | null;
+  SEBEP?: string | null;
+}
+
 interface VeriEmirler {
   ID?: number | null;
   KOD?: string | null;
@@ -366,11 +408,16 @@ const getData = async () => {
 
     veriListe.value = response.data.liste;
     veriEmirler.value = response.data.emirler;
+    veriReworks.value = response.data.reworks;
     veriIskartalar.value = response.data.iskartalar;
     toplamListe.value = response.data.toplamListe;
     toplamEmir.value = response.data.toplamEmir;
+    toplamIskarta.value = response.data.toplamIskarta
+    toplamRework.value = response.data.toplamReworks;
+    rework.value = response.data.toplamReworks;
     iskarta.value = response.data.toplamIskarta;
     uygun.value = response.data.toplamUretim;
+
   } catch (error) {
     console.error("Veri çekilirken hata oluştu: ", error);
   } finally {
@@ -418,10 +465,11 @@ async function handlePress() {
     }
   }, 1000);
 
-  // setTimeout(() => {
-  //   isCooldown.value = toplamListe.value > 0 ? true : false;
-  // }, 5000);
+  setTimeout(() => {
+    isCooldown.value = toplamListe.value > 0 ? true : false;
+  }, 5000);
 }
+
 function handleRelease() {
   isPressed.value = false;
 }
@@ -457,10 +505,11 @@ async function handlePressg() {
     if (cooldownTimeg.value <= 0) clearInterval(interval1);
   }, 1000);
 
-  // setTimeout(() => {
-  //   isPressedg.value = false;
-  // }, 5000);
+  setTimeout(() => {
+    isPressedg.value = false;
+  }, 5000);
 }
+
 function handleReleaseg() {
   isPressed.value = false;
 }
@@ -478,39 +527,90 @@ const sebepGir = computed(() => {
   };
 });
 
-async function handlePress1() {
-  if (isCooldown1.value || toplamListe.value == 0) return;
+async function handlePressh() {
+  if (isCooldown.value || toplamListe.value == 0) return;
+  tur.value = 'h';
 
+  popupTitle.value = "Hurda Sebebini Giriniz"
+  try {
+    const response = await axios.get('/api/sebep-list', {
+      params: {
+        tur: tur.value,
+      },
+    })
+    sebepOptions.value = response.data.map((item: { SEBEP: string }) => item.SEBEP)
+  } catch (error) {
+    console.error('Sebep listesi yüklenirken hata oluştu:', error)
+  }
   popupHurdaVisible.value = true;
   // isUserInfoEditDialogVisible.value = !isUserInfoEditDialogVisible.value;
 
-  isPressed1.value = true;
+  isPressedh.value = true;
 
-  isCooldown1.value = true;
-  cooldownTime1.value = 5;
+  isCooldownh.value = true;
+  cooldownTimeh.value = 5;
 
   const interval = setInterval(() => {
-    cooldownTime1.value -= 1;
-    if (cooldownTime1.value <= 0) {
-      isCooldown1.value = toplamListe.value > 0 ? false : true;
+    cooldownTimeh.value -= 1;
+    if (cooldownTimeh.value <= 0) {
+      isCooldownh.value = toplamListe.value > 0 ? false : true;
       clearInterval(interval);
     }
   }, 1000);
 
-  // setTimeout(() => {
-  //   isCooldown1.value = false;
-  // }, 5000);
-}
-function handleRelease1() {
-  isPressed1.value = false;
+  setTimeout(() => {
+    isCooldownh.value = false;
+  }, 5000);
 }
 
+function handleReleaseh() {
+  isPressedh.value = false;
+}
+
+async function handlePressr() {
+  if (isCooldown.value || toplamListe.value == 0) return;
+  popupTitle.value = "Karantina Sebebini Giriniz"
+  tur.value = 'r'
+  popupHurdaVisible.value = true;
+  // isUserInfoEditDialogVisible.value = !isUserInfoEditDialogVisible.value;
+  try {
+    const response = await axios.get('/api/sebep-list', {
+      params: {
+        tur: tur.value,
+      },
+    })
+    sebepOptions.value = response.data.map((item: { SEBEP: string }) => item.SEBEP)
+  } catch (error) {
+    console.error('Sebep listesi yüklenirken hata oluştu:', error)
+  }
+  isPressedr.value = true;
+
+  isCooldownr.value = true;
+  cooldownTimer.value = 5;
+
+  const interval = setInterval(() => {
+    cooldownTimer.value -= 1;
+    if (cooldownTimer.value <= 0) {
+      isCooldownr.value = toplamListe.value > 0 ? false : true;
+      clearInterval(interval);
+    }
+  }, 1000);
+
+  setTimeout(() => {
+    isCooldownr.value = false;
+  }, 5000);
+}
+
+function handleReleaser() {
+  isPressedr.value = false;
+}
 
 const HurdaKaydet = async () => {
   try {
     axios
       .post("/api/iskartaEkle", {
         params: {
+          tur: tur.value,
           id: Number(veriListe.value[0].ID),
           urunID: Number(veriListe.value[0].URUNID),
           isemriID: Number(veriListe.value[0].ISEMRIID),
@@ -539,13 +639,6 @@ function formatNumber(value: number): string {
 const dongu = ref<ReturnType<typeof setInterval> | null>(null);
 
 onMounted(async () => {
-  try {
-    const response = await axios.get('/api/sebep-list')
-    sebepOptions.value = response.data.map((item: { SEBEP: string }) => item.SEBEP)
-  } catch (error) {
-    console.error('Sebep listesi yüklenirken hata oluştu:', error)
-  }
-
   pageTitleStore.setToplam(" (İş Emri seçiniz...)");
   getData();
 
@@ -565,7 +658,7 @@ onMounted(async () => {
     isCooldown.value = toplamListe.value == 0 ? true : cooldownTime.value == 0 ? false : true;
 
     getData();
-  }, 2000);
+  }, 5000);
 });
 
 onBeforeUnmount(() => {
@@ -573,7 +666,6 @@ onBeforeUnmount(() => {
     clearInterval(dongu.value);
   }
 });
-
 
 const route = useRoute();
 
@@ -612,13 +704,68 @@ watch(
   },
   { immediate: true } // İlk değer için de çalışsın
 );
+
+const getIconType = (cellElement: HTMLElement, cellInfo: any): void => {
+  const durum = cellInfo.data.DURUM
+
+  const createIcon = (color: string, dolu: boolean) => {
+    const icon = document.createElement('span')
+
+    icon.className = dolu ? 'dx-icon dx-icon-isnotblank' : 'dx-icon dx-icon-isblank'
+    icon.style.marginRight = '8px' // İkon ile metin arasına boşluk ekle
+    icon.style.color = color // İkon rengi
+    icon.style.fontSize = '16' // Ana span'ı etkisizleştir
+    icon.style.display = 'inline-flex'
+
+    return icon
+  }
+
+  if (durum === "BEKLEMEDE") {
+    const orangeIcon = createIcon('orange', true)
+    cellElement.insertBefore(orangeIcon, cellElement.firstChild)
+  }
+  else if (durum === "UYGUN") {
+    const greenIcon = createIcon('limegreen', true)
+    cellElement.insertBefore(greenIcon, cellElement.firstChild)
+  }
+  else {
+    const redIcon = createIcon('red', true)
+    cellElement.insertBefore(redIcon, cellElement.firstChild)
+  }
+}
 </script>
 
 
+<style>
+.dx-datagrid .dx-row>td {
+  padding: 8px 6px !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+}
 
+.grid {
+  display: flex;
+  flex-direction: column;
+  block-size: 80vh;
+}
 
+.grid .informer {
+  display: grid;
+  grid-template-columns: 100%;
+  inline-size: 120px;
+  padding-inline-end: 20px;
+  text-align: center;
+}
 
-<style scoped>
+.grid .count {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.grid .dx-toolbar-items-container {
+  min-block-size: 44px;
+}
+
 .demo-container,
 #app,
 #page {
@@ -636,14 +783,13 @@ watch(
 .mantar-buton {
   position: relative;
   background: linear-gradient(145deg, #f7bcbc, #e86165);
-  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 60%) !important;
 }
 
 .button-icon {
   block-size: auto;
   inline-size: 100%;
 }
-
 
 .sari {
   background-color: #e7f368;
@@ -703,8 +849,8 @@ watch(
 
 .animated-number {
   animation: fadeIn 1s ease;
-  font-family: 'Montserrat';
-  font-size: 9.6rem;
+  font-family: Montserrat;
+  font-size: 8.0rem;
 }
 
 @keyframes fadeIn {

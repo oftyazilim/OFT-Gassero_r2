@@ -8,6 +8,7 @@ use App\Http\Controllers\planlama\Uretimler;
 use App\Http\Controllers\planlama\Mamuller;
 use App\Http\Controllers\dashboards\Dashboards;
 use App\Http\Controllers\tanimlar\IskartaSebepleriController;
+use App\Http\Controllers\tanimlar\KarantinaSebepleriController;
 use App\Http\Controllers\tanimlar\MamulOzellikTanimlari;
 use App\Http\Controllers\personel\UserController;
 use App\Http\Controllers\personel\PermissionController;
@@ -80,9 +81,12 @@ Route::get('/esanjoruretim', [Uretimler::class, 'getEsanjorUretim']);
 Route::post('/operasyonKaydet', [EsanjorController::class, 'operasyonKaydet']);
 Route::post('/geriAl', [EsanjorController::class, 'geriAl']);
 Route::get('/sebep-list', [EsanjorController::class, 'getSebepList']);
+Route::get('/getReworks', [EsanjorController::class, 'getReworks']);
+Route::post('/reworksSonuc', [EsanjorController::class, 'ReworksKaydet']);
 
 //* Tanımlar --------------------------------------------------------
 Route::apiResource('iskartasebepleri', IskartaSebepleriController::class);
+Route::apiResource('karantinasebepleri', KarantinaSebepleriController::class);
 Route::apiResource('mamultanimlari', MamulOzellikTanimlari::class);
 
 //* Personel --------------------------------------------------------
@@ -106,6 +110,9 @@ Route::post('/roles/{role}/permissions', [RollerController::class, 'assignPermis
 Route::delete('/roles/{role}/permissions/{permission}', [RollerController::class, 'removePermission']);
 Route::get('/roles-count', [RollerController::class, 'getRolesWithUserCount']);
 Route::get('/roles-users/{rol}', [RollerController::class, 'getUsersWithRoles']);
+Route::post('/rolEkle', [RollerController::class, 'RolEkle']);
+Route::put('/rolGuncelle/{id}', [RollerController::class, 'RolGuncelle']);
+Route::delete('/rolSil/{id}', [RollerController::class, 'RolSil']);
 
 // routes/api.php
 Route::get('/users/{user}/permissions', [PermissionController::class, 'getPermissions']);

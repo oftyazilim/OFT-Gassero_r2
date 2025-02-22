@@ -8,16 +8,13 @@
     <div class="grids">
       <DxDataGrid :data-source="roles" :key="rolesKey" key-expr="id" :show-borders="true" width="400"
         :columns-auto-width="true" :row-alternation-enabled="true" :focused-row-enabled="true" :show-indicator="true"
-        @focused-row-changed="onFocusedRowChanged" @row-updating="onRowUpdating" @row-inserting="onRowInserted"
-        @row-removing="onRowRemoved">
-
+        @focused-row-changed="onFocusedRowChanged">
         <DxEditing :allow-updating="isUpdateIconVisible" :allow-adding="true" :allow-deleting="isDeleteIconVisible"
-          :use-icons="true" mode="row" />
+          :use-icons="true" mode="form" />
 
         <DxColumn data-field="id" caption="Rol ID" width="60" :allow-editing="false" />
         <DxColumn data-field="name" caption="Rol Adı" width="120" />
-        <DxColumn data-field="guard_name" caption="Guard" width="70" />
-        <DxColumn data-field="users_count" caption="KllAd" width="60" />
+        <DxColumn data-field="users_count" caption="Kullanıcı Sayısı" width="120" />
 
         <DxScrolling mode="virtual" column-rendering-mode="virtual" />
         <DxSearchPanel :visible="true" :width="240" placeholder="Ara..." />
@@ -81,77 +78,6 @@ const isSabit = (name: string) => name && ['ALL'].indexOf(name.trim().toUpperCas
 const isDeleteIconVisible = (e: { row: DxDataGridTypes.Row }) => !isSabit(e.row.data.name);
 const isUpdateIconVisible = (e: { row: DxDataGridTypes.Row }) => !isSabit(e.row.data.name);
 
-const onRowUpdating = (e: any) => {
-  handleRowUpdating(e);
-};
-
-const onRowInserted = (e: any) => {
-  handleRowInserted(e);
-  // axios.post("/api/rolEkle", { name: e.data.name })
-  //   .then((response) => {
-  //     // console.log("Veri başarıyla eklendi", response);
-  //     loadRoles();
-  //   })
-  //   .catch((error) => {
-  //     console.error("Veri eklenirken hata oluştu: ", error);
-  //   });
-};
-
-const onRowRemoved = (e: any) => {
-  handleRowRemoved(e);
-};
-
-const handleRowUpdating = (e: any) => {
-  e.promise = new Promise<void>(async (resolve, reject) => {
-    try {
-      const updatedRow = { ...e.oldData, ...e.newData }; // Eski ve yeni veriyi birleştir
-      await axios.put(`/api/rolGuncelle/${e.key}`, updatedRow); // API çağrısı
-      await loadRoles(); // Veriyi tekrar yenile
-      e.component.cancelEditData(); // Edit modundan çık
-      resolve(); // İşlemi başarıyla tamamla
-    } catch (error) {
-      console.error('Error updating data:', error);
-      reject(); // İşlemi başarısız olarak bildir
-    }
-  });
-};
-
-const handleRowInserted = (e: any) => {
-  e.promise = new Promise<void>(async (resolve, reject) => {
-    try {
-      await axios.post("/api/rolEkle", { name: e.data.name })
-      await loadRoles(); // Veriyi tekrar yenile
-      e.component.cancelEditData(); // Edit modundan çık
-      resolve(); // İşlemi başarıyla tamamla
-    } catch (error) {
-      console.error('Error adding data:', error);
-      reject(); // İşlemi başarısız olarak bildir
-    }
-  });
-};
-
-const handleRowRemoved = (e: any) => {
-  e.promise = new Promise<void>(async (resolve, reject) => {
-    try {
-      await axios.delete(`/api/rolSil/${e.key}`); // Veriyi sil
-      await loadRoles(); // Veriyi tekrar yenile
-      e.component.cancelEditData(); // Edit modundan çık
-      resolve(); // İşlemi başarıyla tamamla
-    } catch (error) {
-      console.error('Error deleting data:', error);
-      reject(); // İşlemi başarısız olarak bildir
-    }
-  });
-};
-
-
-
-
-
-
-
-
-
 // Rolleri yükle
 const loadRoles = async () => {
   const { data } = await axios.get("/api/roles-count");
@@ -208,11 +134,10 @@ const removePermission = async (e: any) => {
   await axios.delete(
     `/api/roles/${selectedRole.value.id}/permissions/${permission.id}`
   );
-}
+};
 
-onMounted(async () => {
-  loadRoles();
-});
+// İlk yüklemede rolleri çek
+loadRoles();
 
 const onFocusedRowChanged = (e: any) => {
   const data = e.row!.data!;

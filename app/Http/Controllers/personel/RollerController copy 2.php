@@ -8,7 +8,6 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 
 class RollerController extends Controller
@@ -36,23 +35,23 @@ class RollerController extends Controller
     public function getRolesWithUserCount()
     {
         $roles = Role::withCount('users')->get();
-        // Log::info($roles);
+        ///Log::info($roles);
         return response()->json($roles);
     }
 
     public function getUsersWithRoles($rol)
     {
-        // Log::info($rol);
+        //Log::info($rol);
         // $role = Role::where('name', $rol)->first();
         // $users = $role->users;
         $users = User::role($rol)->get();
-        //  Log::info($users);
+        //Log::info($users);
         return response()->json($users);
     }
 
     public function assignPermission(Role $role, Request $request)
     {
-
+        
         $request->validate(['permission_id' => 'required|exists:permissions,id']);
         $permission = Permission::findOrFail($request->permission_id);
 
@@ -100,7 +99,6 @@ class RollerController extends Controller
 
     public function store(Request $request)
     {
-
         $role = Role::create(['name' => $request->name]);
 
         foreach ($request->permissions as $permission) {
@@ -136,57 +134,6 @@ class RollerController extends Controller
 
         return response()->json(['message' => 'Rol başarıyla oluşturuldu.']);
     }
-
-    public function RolEkle(Request $request)
-    {
-        Log::info('Hata burada mı acep');
-
-        $request->validate([
-            'name' => 'required|string|unique:roles,name',
-        ]);
-
-        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
-
-        return response()->json(['message' => 'Rol başarıyla eklendi', 'role' => $role], 201);
-    }
-
-    public function RolGuncelle(Request $request, $id)
-    {
-        try {
-            // Güncellenen veriyi al
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255|unique:roles,name,' . $id,
-                // 'guard_name' => 'required|string|max:255',
-            ]);
-
-            // İlgili rolü bul
-            $role = Role::findOrFail($id);
-
-            // Rol bilgilerini güncelle
-            $role->update($validatedData);
-
-            return response()->json(['message' => 'Rol başarıyla güncellendi', 'role' => $role], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Güncelleme sırasında hata oluştu', 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function RolSil($id)
-    {
-        try {
-            // İlgili rolü bul
-            $role = Role::findOrFail($id);
-
-            // Rolü sil
-            $role->delete();
-
-            return response()->json(['message' => 'Rol başarıyla silindi'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Silme işlemi sırasında hata oluştu', 'message' => $e->getMessage()], 500);
-        }
-    }
-
-
 
     // public function getRolesWithUserCount()
     // {

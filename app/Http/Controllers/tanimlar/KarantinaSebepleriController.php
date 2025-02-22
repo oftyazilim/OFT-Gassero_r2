@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\tanimlar;
 
 use App\Http\Controllers\Controller;
-use App\Models\tanimlar\IskartaSebepleri;
+use App\Models\tanimlar\KarantinaSebepleri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class IskartaSebepleriController extends Controller
+class KarantinaSebepleriController extends Controller
 {
     // 1. Tüm verileri listeleme
     public function index()
     {
-        $data = IskartaSebepleri::all();
+        $data = KarantinaSebepleri::all();
     
         $istasyonlar = DB::table('OFTT_01_ISTASYONLAR')
           ->select('ID', 'KOD', 'KISATANIM')
@@ -38,7 +38,7 @@ class IskartaSebepleriController extends Controller
             'ISTASYONID' => 'required|integer|min:0|max:100',
         ]);
 
-        $data = IskartaSebepleri::create($validated);
+        $data = KarantinaSebepleri::create($validated);
 
         return response()->json($data, 201);
     }
@@ -46,7 +46,7 @@ class IskartaSebepleriController extends Controller
     // 3. Belirli bir kaydı gösterme (isteğe bağlı, grid'de kullanılmaz)
     public function show($id)
     {
-        $data = IskartaSebepleri::find($id);
+        $data = KarantinaSebepleri::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Kayıt bulunamadı'], 404);
@@ -58,7 +58,7 @@ class IskartaSebepleriController extends Controller
     // 4. Belirli bir kaydı güncelleme
     public function update(Request $request, $id)
     {
-        $data = IskartaSebepleri::find($id);
+        $data = KarantinaSebepleri::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Kayıt bulunamadı'], 404);
@@ -82,7 +82,7 @@ class IskartaSebepleriController extends Controller
     // 5. Belirli bir kaydı silme
     public function destroy($id)
     {
-        $data = IskartaSebepleri::find($id);
+        $data = KarantinaSebepleri::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Kayıt bulunamadı'], 404);

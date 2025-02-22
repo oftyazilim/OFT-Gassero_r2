@@ -5,11 +5,11 @@ namespace App\Models\tanimlar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IskartaSebepleri extends Model
+class KarantinaSebepleri extends Model
 {
     use HasFactory;
 
-    protected $table = 'OFTT_01_ISKRTSEBEPLERI'; // Tablo ismini belirtiyoruz
+    protected $table = 'OFTT_01_RWRKSEBEPLERI'; // Tablo ismini belirtiyoruz
 
   protected $primaryKey = 'ID'; // Eğer birincil anahtar 'ID' değilse, bunu belirtmelisiniz.
 

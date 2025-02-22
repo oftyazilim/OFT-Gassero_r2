@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import IskartaSebepleri from '../components/IskartaSebepleri.vue';
+import KarantinaSebepleri from '../components/KarantinaSebepleri.vue';
 import MamulOzellikTanimlari from '../components/MamulOzellikTanimlari.vue';
 import { usePageTitleStore } from "@/stores/pageTitle";
 
@@ -30,7 +31,7 @@ const currentTab = ref('tab-2')
 
           <VTab>
             <VIcon start icon="tabler-access-point" />
-            Hedef Tanımları
+            Karantina Sebepleri
           </VTab>
         </VTabs>
       </div>
@@ -52,7 +53,7 @@ const currentTab = ref('tab-2')
 
           <VWindowItem value="tab-3">
             <p class="mb-0">
-              Şimdilik Aktif Değil ...
+              <KarantinaSebepleri />
             </p>
           </VWindowItem>
         </VWindow>
