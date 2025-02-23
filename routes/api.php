@@ -59,6 +59,7 @@ Route::post('/data', [Emirler::class, 'store']);
 Route::put('/uretimekle', [Emirler::class, 'uretimKaydet']);
 
 //* Üretim Girişleri ------------------------------------------------------
+Route::get('/getdtkazantest', [Uretimler::class, 'getDtKazanTest']);
 Route::get('/dataUretim', [Uretimler::class, 'getData']);
 Route::get('/dataIskarta', [Uretimler::class, 'getDataIskarta']);
 Route::put('/uretimduzelt', [Uretimler::class, 'uretimKaydet']);

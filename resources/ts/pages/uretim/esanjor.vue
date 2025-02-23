@@ -259,11 +259,11 @@ import butonmavi from '@images/buton-mavi1.png';
 import butonyesil from '@images/buton-yesil1.png';
 import axios from "axios";
 import {
+  DxButton,
   DxColumn,
   DxDataGrid,
-  DxEditing,
-  DxButton,
   DxDataGridTypes,
+  DxEditing,
   DxLoadPanel,
   DxScrolling,
   DxSorting
@@ -396,6 +396,7 @@ interface VeriEmirler {
 }
 
 const getData = async () => {
+
   try {
     pageTitleStore.setToplam(" ( " + (aktifIsemriID.value > 0 ? "Aktif İş Emri ID: " + aktifIsemriID.value : "İş emri seçiniz...") + " )");
     const response = await axios.get("/api/listeEsanjor", {
@@ -438,7 +439,7 @@ async function handlePress() {
       params: {
         id: veriListe.value[0].ID,
         urunID: veriListe.value[0].URUNID,
-        isemriID: veriEmirler.value[0].ID,
+        isemriID: aktifIsemriID.value,
         barkod: veriListe.value[0].BARKOD,
         operasyon1: operasyon1.value,
         operasyon2: operasyon2.value,
@@ -737,10 +738,11 @@ const getIconType = (cellElement: HTMLElement, cellInfo: any): void => {
 
 
 <style>
-.dx-datagrid .dx-row>td {
-  padding: 8px 6px !important;
+.dx-datagrid .dx-row > td {
   font-size: 16px !important;
   line-height: 26px !important;
+  padding-block: 8px !important;
+  padding-inline: 6px !important;
 }
 
 .grid {
@@ -850,7 +852,7 @@ const getIconType = (cellElement: HTMLElement, cellInfo: any): void => {
 .animated-number {
   animation: fadeIn 1s ease;
   font-family: Montserrat;
-  font-size: 8.0rem;
+  font-size: 8rem;
 }
 
 @keyframes fadeIn {

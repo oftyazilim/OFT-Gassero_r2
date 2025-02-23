@@ -34,11 +34,34 @@ class Uretimler extends Controller
       ->orderBy('ID', 'desc')
       ->get();
 
-      $toplam = $data->count();
+    $toplam = $data->count();
 
     return response()->json([
       'data' => $data,
       'toplam' => $toplam,
+    ], 200);
+  }
+
+  public function getDtKazanTest(Request $request)
+  {
+    $query = DB::connection('sqlsrvg')->table('OFTT_KOMBI_TESTLERI');
+
+    $data = $query
+      ->whereBetween(DB::raw("CONVERT(date, BASLAMA_ZAMANI)"), [$request->filterValue, $request->filterValue1])
+      ->orderBy('ID', 'desc')
+      ->get();
+
+    $toplam = $data->count();
+    $max = $data->max('TEST_SURESI');
+    $uygun = $data->where('TEST_SONUCU', 'UYGUN')->count();
+    $hatali = $data->where('TEST_SONUCU', 'HATALI')->count();
+
+    return response()->json([
+      'data' => $data,
+      'toplam' => $toplam,
+      'max' => $max,
+      'uygun' => $uygun,
+      'hatali' => $hatali,
     ], 200);
   }
 

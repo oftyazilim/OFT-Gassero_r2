@@ -24,6 +24,9 @@ const pageTitleStore = usePageTitleStore();
 
 const title = computed(() => pageTitleStore.title);
 const toplam = computed(() => pageTitleStore.toplam);
+const ek1 = computed(() => pageTitleStore.ek1);
+const ek2 = computed(() => pageTitleStore.ek2);
+const ek3 = computed(() => pageTitleStore.ek3);
 
 // Toplam Kg'yi formatlayan bir fonksiyon
 // function formatNumber(number) {
@@ -52,6 +55,9 @@ const toplam = computed(() => pageTitleStore.toplam);
 
         <h5 class="text-h5 m-0 p-0"> {{ title }} </h5> <!-- Dinamik başlık -->
         <h5 class="text-h5 m-0 ms-2 p-0"> {{ toplam }} </h5>
+        <h5 class="text-h5 m-0 ms-4 p-0"> {{ ek1 }} </h5>
+        <h5 class="text-h5 m-0 ms-4 p-0"> {{ ek2 }} </h5>
+        <h5 class="text-h5 m-0 ms-4 p-0"> {{ ek3 }} </h5>
 
         <VSpacer />
         

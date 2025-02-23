@@ -38,6 +38,12 @@ export default [
         action: "readx",
         subject: "SuperAdminx",
       },
+      {
+        title: "Kazan Testleri",
+        to: "uretim-kazantestleri",
+        action: "read",
+        subject: "SuperAdmin",
+      },
     ],
   },
 ];

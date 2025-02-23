@@ -1,0 +1,1 @@
+import{u as t}from"./pageTitle-BB4Xy5Fv.js";import{d as l,r as e}from"./main-CXefX_qh.js";const s="Ana Ekran",p=l({__name:"home-page",setup(f){e(!1),e(!1),e(!1),e(!1),e(!1),e(!1),e(!1),e(!1),e(!1),e(!1);const a=t();return document.title="OFT Yazılım - "+String(s),a.setTitle(s),a.setToplam(""),(o,r)=>null}});export{p as default};

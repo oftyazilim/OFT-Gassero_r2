@@ -15,6 +15,34 @@ use Illuminate\Support\Facades\DB;
 
 class EsanjorController extends Controller
 {
+
+  public function stokAl()
+  {
+    $data = DB::table('OFTV_01_STOKESANJOR')
+      ->orderBy('ID', 'desc')
+      ->get();
+
+      $op1 = $data->where('OPERASYON1', true)->where('OPERASYON2', false)->count();
+      $op2 = $data->where('OPERASYON2', true)->where('OPERASYON3', false)->count();
+      $op3 = $data->where('OPERASYON3', true)->where('OPERASYON4', false)->count();
+      $op4 = $data->where('OPERASYON4', true)->where('OPERASYON5', false)->count();
+      $op5 = $data->where('OPERASYON5', true)->where('OPERASYON6', false)->count();
+      $op6 = $data->where('OPERASYON6', true)->count();
+
+      $toplam = $data->count();
+
+    return response()->json([
+      'data' => $data,
+      'op1' => $op1,
+      'op2' => $op2,
+      'op3' => $op3,
+      'op4' => $op4,
+      'op5' => $op5,
+      'op6' => $op6,
+      'toplam' => $toplam,
+    ], 200);
+  }
+
   public function listeAl(Request $request)
   {
     $operasyon1 = $request->query('operasyon1');
@@ -61,7 +89,7 @@ class EsanjorController extends Controller
     $toplamIskarta = $iskartalar->count() | 0;
     $toplamReworks = $reworks->count() | 0;
 
-    // Log::info($toplamUretim);
+    Log::info($isemriID);
 
     return response()->json([
       'liste' => $liste,
