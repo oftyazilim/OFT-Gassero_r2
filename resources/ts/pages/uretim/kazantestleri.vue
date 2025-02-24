@@ -8,9 +8,7 @@
           <DxDataGrid id="grid" ref="dataGridRef" :key="gridKey" :data-source="gridData" key-expr="ID"
             :show-borders="true" :focused-row-enabled="true" :row-alternation-enabled="true" :min-width="200"
             @exporting="onExporting" :allow-column-reordering="true" :column-auto-width="false"
-            @focused-row-changed="onFocusedRowChanged" :allow-column-resizing="true" column-resizing-mode="widget"
-            @cell-prepared="onCellPrepared" :auto-navigate-to-focused-row="true"
-            :on-option-changed="handleOptionChanged" @contextMenuPreparing="onContextMenuPreparing"
+            :allow-column-resizing="true" column-resizing-mode="widget" :auto-navigate-to-focused-row="true"
             v-model:focused-row-key="focusedRowKey">
 
             <!-- <DxColumn type="selection" :fixed="true" fixedPosition="left" /> -->
@@ -20,34 +18,31 @@
             <DxColumn data-field="URUN_KODU" caption="ÜRÜN KODU" :visible="true" :width="130" />
             <DxColumn data-field="URUN_ADI" caption="ÜRÜN ADI" :min-width="250" />
             <DxColumn data-field="SERI_NO" caption="SERİ NO" :width="150" :visible="true" />
-            <DxColumn data-field="BASLAMA_ZAMANI" caption="TARİH" data-type="date" :width="140" :visible="true"
-              :format="{
-                formatter: (date: any) => {
-                  const formattedDate = new Intl.DateTimeFormat('tr-TR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }).format(new Date(date));
-                  return formattedDate.replace(/\//g, '.');
-                },
-              }" />
-            <DxColumn data-field="BASLAMA_ZAMANI" caption="SAAT" data-type="date" :width="90" :visible="true"
-              :format="{
-                formatter: (date: any) => {
-                  const formattedDate = new Intl.DateTimeFormat('tr-TR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }).format(new Date(date));
+            <DxColumn data-field="BASLAMA_ZAMANI" caption="TARİH" data-type="date" :width="140" :visible="true" :format="{
+              formatter: (date: any) => {
+                const formattedDate = new Intl.DateTimeFormat('tr-TR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                }).format(new Date(date));
+                return formattedDate.replace(/\//g, '.');
+              },
+            }" />
+            <DxColumn data-field="BASLAMA_ZAMANI" caption="SAAT" data-type="date" :width="90" :visible="true" :format="{
+              formatter: (date: any) => {
+                const formattedDate = new Intl.DateTimeFormat('tr-TR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).format(new Date(date));
 
-                  return formattedDate.replace(/\//g, '.');
-                },
-              }" />
+                return formattedDate.replace(/\//g, '.');
+              },
+            }" />
             <DxColumn data-field="TEST_SURESI" caption="SÜRE (dk)" :width="120" :visible="true"
               cell-template="surecCellTemplate" />
-            <DxColumn data-field="TEST_SONUCU" caption="SONUÇ" data-type="string" :width="100"
-              :visible="true" :cell-template="getIconType" />
-            <DxColumn data-field="IE_ID" caption="İŞ EMRİ ID" data-type="number" :width="60"
-              :visible="false" />
+            <DxColumn data-field="TEST_SONUCU" caption="SONUÇ" data-type="string" :width="100" :visible="true"
+              :cell-template="getIconType" />
+            <DxColumn data-field="IE_ID" caption="İŞ EMRİ ID" data-type="number" :width="60" :visible="false" />
             <DxColumn data-field="ESANJOR_KODU" caption="EŞANJÖR KODU" :min-width="120" :width="140" />
             <DxColumn data-field="FAN_KODU" caption="FAN KODU" :min-width="120" :width="140" />
             <DxColumn data-field="KART_KODU" caption="KART KODU" :min-width="120" :width="140" />
@@ -68,7 +63,6 @@
             <DxSearchPanel :visible="true" :width="240" />
             <DxScrolling mode="virtual" row-rendering-mode="virtual" show-scrollbar="always" />
             <DxSorting mode="multiple" />
-            <DxRowDragging :allow-reordering="true" :on-reorder="onReorder" :show-drag-icons="false" />
             <DxExport :enabled="true" :allow-export-selected-data="false" />
 
             <DxColumnChooser height="540px" :enabled="true" mode="select" :position="position">
@@ -187,7 +181,7 @@
             </template>
 
             <template #surecCellTemplate="{ data: cellData }">
-              
+
               <SurecCell :cell-data="cellData" :max-deger="maxSure" />
             </template>
 
@@ -409,9 +403,9 @@ onMounted(async () => {
 onBeforeUnmount(() => {
 
   pageTitleStore.setToplam("");
-    pageTitleStore.setEk1("");
-    pageTitleStore.setEk2("");
-    pageTitleStore.setEk3("");
+  pageTitleStore.setEk1("");
+  pageTitleStore.setEk2("");
+  pageTitleStore.setEk3("");
 });
 
 const Yenile = async () => {

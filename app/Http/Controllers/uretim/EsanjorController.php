@@ -89,7 +89,7 @@ class EsanjorController extends Controller
     $toplamIskarta = $iskartalar->count() | 0;
     $toplamReworks = $reworks->count() | 0;
 
-    Log::info($isemriID);
+    // Log::info($isemriID);
 
     return response()->json([
       'liste' => $liste,
@@ -160,7 +160,7 @@ class EsanjorController extends Controller
 
       if ($emir) { // Eğer kayıt bulunursa
         $emir->increment('URETIMMIKTAR');
-        Log::info($emir);
+       // Log::info($emir);
       }
     }
 
@@ -267,7 +267,7 @@ class EsanjorController extends Controller
 
   public function ReworksKaydet(Request $request)
   {
-      Log::info($request->all());
+      // Log::info($request->all());
       
       try {
           $updateData = $request->input('updateData');

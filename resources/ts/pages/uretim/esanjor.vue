@@ -6,9 +6,9 @@
     <DxRow :ratio="1" />
     <DxRow :ratio="1" />
 
-    <DxCol :ratio="2.33" />
-    <DxCol :ratio="2.33" />
-    <DxCol :ratio="2.33" />
+    <DxCol :ratio="2.7" />
+    <DxCol :ratio="2.15" />
+    <DxCol :ratio="2.15" />
     <DxCol :ratio="7" />
 
     <DxItem>
@@ -49,13 +49,13 @@
                 transform: isPressedr ? 'scale(0.95)' : 'scale(1)',
                 transition: 'transform 0.1s ease',
                 cursor: isCooldown ? 'not-allowed' : 'pointer',
-              }" height="50" width="100" style="border-radius: 75px;" @mousedown="handlePressr"
+              }" height="100" width="100" style="border-radius: 75px;" @mousedown="handlePressr"
                 @mouseup="handleReleaser" @mouseleave="handleReleaser" @touchstart.prevent="handlePressr"
                 @touchend="handleReleaser" @touchcancel="handleReleaser">
                 <img :src="isCooldown ? cooldownImage : cooldownImage1" alt="Buton Simge" class="button-icon" />
               </VCard>
             </VCol>
-
+<!-- 
             <VCol cols="7" class="d-flex flex-column align-center justify-center pt-0 pb-0 pe-0">
               <h3>HURDA</h3>
               <VCard class="mantar-buton text-center mt-1 d-flex align-center justify-center position-relative" :style="{
@@ -67,7 +67,7 @@
                 @touchend="handleReleaseh" @touchcancel="handleReleaseh">
                 <img :src="isCooldown ? cooldownImage : cooldownImage1" alt="Buton Simge" class="button-icon" />
               </VCard>
-            </VCol>
+            </VCol> -->
           </v-col>
         </v-row>
       </VCard>
@@ -852,7 +852,7 @@ const getIconType = (cellElement: HTMLElement, cellInfo: any): void => {
 .animated-number {
   animation: fadeIn 1s ease;
   font-family: Montserrat;
-  font-size: 8rem;
+  font-size: 7rem;
 }
 
 @keyframes fadeIn {

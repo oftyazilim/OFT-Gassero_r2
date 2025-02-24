@@ -1,79 +1,81 @@
 <template>
   <VCard class="pa-2">
-    <DxContextMenu :data-source="menuItems" :width="200" target="#gridContainer" @item-click="itemClick" />
-    <DxDataGrid id="gridContainer" ref="dataGridRef" @content-ready="onContentReady" :data-source="gridData"
-      :show-borders="true" key-expr="ID" @editor-preparing="onEditorPreparing" :show-column-lines="false"
-      :show-row-lines="true" :row-alternation-enabled="true" :allow-column-reordering="true" :focused-row-enabled="true"
-      @row-removing="onRowRemoving" :allow-column-resizing="true" @exporting="onExporting" :show-indicator="true"
-      @cell-prepared="onCellPrepared" :repaint-changes-only="true" @contextMenuPreparing="onContextMenuPreparing">
+    <VCardText class="mt-0 pa-2">
+      <VCol cols="12" class="mt-2 pa-1 pe-2">
+        <DxDataGrid id="grid" ref="dataGridRef" :key="gridKey" @content-ready="onContentReady" :data-source="gridData"
+          :show-borders="true" key-expr="ID" :focused-row-enabled="true" :row-alternation-enabled="true"
+          :min-width="200" @exporting="onExporting" :allow-column-reordering="true" :column-auto-width="false"
+          :allow-column-resizing="true" column-resizing-mode="widget" :auto-navigate-to-focused-row="true">
 
-      <DxColumn data-field="ID" caption="ID" data-type="number" :width="90" alignment="center" />
-      <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ ID" :width="120" data-type="number"/>
-      <DxColumn data-field="OPERASYON" caption="OPERASYON" data-type="string" :visible="false" :width="160" />
-      <DxColumn data-field="OPERASYON_TANIMI" caption="OPERASYON" data-type="string" :visible="true" :width="200"/>
-      <DxColumn data-field="URUNID" data-type="number" caption="URUN ID" :visible="true" :width="100" />
-      <DxColumn data-field="ESANJORID" caption="EŞANJÖR ID" data-type="number" />
-      <DxColumn data-field="URETIMTARIH" caption="ÜRT. TARİH" data-type="date" :width="200" :visible="true"
-        alignment="center" :format="{
-          formatter: (date) => {
-            const formattedDate = new Intl.DateTimeFormat('tr-TR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-            }).format(new Date(date));
+          <DxColumn data-field="ISEMRIID" caption="İŞ EMRİ ID" :width="220" data-type="number" />
+          <DxColumn data-field="OPERASYON" caption="OPERASYON" data-type="string" :visible="false" :width="160" />
+          <DxColumn data-field="OPERASYON_TANIMI" caption="OPERASYON" data-type="string" :visible="true" :width="200" />
+          <DxColumn data-field="URUNID" data-type="number" caption="URUN ID" :visible="true" :width="100" />
+          <DxColumn data-field="ESANJORID" caption="EŞANJÖR ID" data-type="number"  :width="100" />
+          <DxColumn data-field="URETIMTARIH" caption="ÜRT. TARİH" data-type="date" :width="200" :visible="true"
+          alignment="center" :format="{
+            formatter: (date) => {
+              const formattedDate = new Intl.DateTimeFormat('tr-TR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+              }).format(new Date(date));
+              
+              return formattedDate.replace(/\//g, '.');
+            },
+          }" />
+          <DxColumn data-field="BARKOD" caption="BARKOD" data-type="string" :visible="true" :width="130" />
+          <DxColumn data-field="URUNADI" caption="ÜRÜN ADI" data-type="string" :min-width="130" />
+          <DxColumn data-field="ID" caption="ID" data-type="number" :width="90" alignment="center" />
 
-            return formattedDate.replace(/\//g, '.');
-          },
-        }" />
-      <DxColumn data-field="BARKOD" caption="BARKOD" data-type="string" :visible="true" :width="130" />
-      <DxColumn data-field="URUNADI" caption="ÜRÜN ADI" data-type="string" />
+          <!-- <DxStateStoring :enabled="true" type="localStorage" storage-key="storageIsEmirleri" /> -->
+          <DxGroupPanel :visible="true" />
+          <DxGrouping :auto-expand-all="expandAll" />
+          <DxFilterPanel :visible="true" />
+          <DxLoadPanel :enabled="true" />
+          <DxScrolling mode="virtual" column-rendering-mode="virtual" />
+          <DxFilterRow :visible="true" />
+          <DxFilterBuilderPopup :position="filterBuilderPopupPosition" />
+          <DxHeaderFilter :visible="true" />
+          <DxSearchPanel :visible="true" :width="240" placeholder="Ara..." />
+          <DxExport :enabled="true" :allow-export-selected-data="true" />
+          <DxSelection mode="single" />
+          <DxColumnFixing :enabled="true" />
+          <DxColumnChooser height="540px" :enabled="true" title="Sütun Seçici">
+            <DxPosition my="right top" at="right bottom" of=".dx-datagrid-column-chooser-button" />
 
-      <!-- <DxStateStoring :enabled="true" type="localStorage" storage-key="storageIsEmirleri" /> -->
-      <DxGroupPanel :visible="true" />
-      <DxGrouping :auto-expand-all="expandAll" />
-      <DxFilterPanel :visible="true" />
-      <DxLoadPanel :enabled="true" />
-      <DxScrolling mode="virtual" column-rendering-mode="virtual" />
-      <DxFilterRow :visible="true" />
-      <DxFilterBuilderPopup :position="filterBuilderPopupPosition" />
-      <DxHeaderFilter :visible="true" />
-      <DxSearchPanel :visible="true" :width="240" placeholder="Ara..." />
-      <DxExport :enabled="true" :allow-export-selected-data="true" />
-      <DxSelection mode="single" />
-      <DxColumnFixing :enabled="true" />
-      <DxColumnChooser height="540px" :enabled="true" title="Sütun Seçici">
-        <DxPosition my="right top" at="right bottom" of=".dx-datagrid-column-chooser-button" />
+            <DxColumnChooserSearch :enabled="true" :editor-options="editorOptions" />
+            <DxColumnChooserSelection :allow-select-all="true" :select-by-click="true" :recursive="true" />
+          </DxColumnChooser>
 
-        <DxColumnChooserSearch :enabled="true" :editor-options="editorOptions" />
-        <DxColumnChooserSelection :allow-select-all="true" :select-by-click="true" :recursive="true" />
-      </DxColumnChooser>
+          <DxSummary>
+            <DxGroupItem :align-by-column="true" column="ISEMRIID" summary-type="count" display-format="{0} adet"
+              :alignment="right" />
+            <DxTotalItem column="BARKOD" summary-type="count" display-format="{0}" />
+          </DxSummary>
 
-      <DxSummary>
-        <DxGroupItem :align-by-column="true" column="ISEMRIID" summary-type="count" display-format="{0} adet"
-        :alignment="right" />
-          <DxTotalItem column="BARKOD" summary-type="count" display-format="{0}" />
-      </DxSummary>
+          <DxToolbar>
+            <DxItem name="groupPanel" />
+            <DxItem location="before" locate-in-menu="auto" template="collapseTemplate" />
+            <DxItem location="after" template="refreshTemplate" />
+            <DxItem location="after" name="columnChooserButton" />
+            <DxItem location="after" name="exportButton" />
+            <DxItem location="after" name="searchPanel" />
+          </DxToolbar>
 
-      <DxToolbar>
-        <DxItem name="groupPanel" />
-        <DxItem location="before" locate-in-menu="auto" template="collapseTemplate" />
-        <DxItem location="after" template="refreshTemplate" />
-        <DxItem location="after" name="columnChooserButton" />
-        <DxItem location="after" name="exportButton" />
-        <DxItem location="after" name="searchPanel" />
-      </DxToolbar>
+          <template #refreshTemplate>
+            <DxButton icon="refresh" @click="refreshDataGrid" />
+          </template>
 
-      <template #refreshTemplate>
-        <DxButton icon="refresh" @click="refreshDataGrid" />
-      </template>
-
-      <template #collapseTemplate>
-              <DxButton :icon="expandAll ? 'collapse' : 'expand'" hint="expandAll ? 'Daralt' : 'Genişlet'" width="40"
-                height="40" styling-mode="text" @click="toggleExpandAll" />
-            </template>
-    </DxDataGrid>
+          <template #collapseTemplate>
+            <DxButton :icon="expandAll ? 'collapse' : 'expand'" hint="expandAll ? 'Daralt' : 'Genişlet'" width="40"
+              height="40" styling-mode="text" @click="toggleExpandAll" />
+          </template>
+        </DxDataGrid>
+      </VCol>
+    </VCardText>
   </VCard>
 
 </template>
@@ -172,6 +174,7 @@ const selectedRow = ref<any | null>(null);
 var mesaj = "Eşanjörler: ";
 const expandAll = ref(false);
 var durum = "0";
+const gridKey = ref(Date.now());
 
 const groupingValues = [
   {
@@ -299,11 +302,28 @@ body {
   block: 90%;
 }
 
-#gridContainer {
+#grid {
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  block-size: 80vh;
+  block-size: 85vh;
+  margin-block: -20px 20px;
+}
+
+#grid .informer {
+  display: grid;
+  grid-template-columns: 100%;
+  inline-size: 120px;
+  padding-inline-end: 20px;
+  text-align: center;
+}
+
+#grid .count {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+#grid .dx-toolbar-items-container {
+  min-block-size: 44px;
 }
 
 .dx-filterbuilder-overlay .dx-scrollable-container {
